@@ -96,30 +96,36 @@ select{
     text-align: center;
     animation: fadeIn 1.5s ease-in-out ;
 }
+.splash-content p{
+    font-size: 1.6vw;
+}
 
 .logo{
     font-size: 100px;
     font-weight: bold;
-    color: rgb(129, 1, 1);
+    color: rgb(243, 37, 37);
     animation: bounce 1.5s infinite;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 #start-btn{
-    margin-top: 20px;
+    margin-top: 10px;
     padding: 12px 30px;
     font-size: 18px;
-    background-color: antiquewhite;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    color: red;
+    color: white;
     transition: backgroun-color 0.3s ease;
+    background: linear-gradient(45deg, #790202 0%, #8B0000 50%, #FF0000 100%);
+    border: white 0.1px solid;
+    width: 10.5vw;
+    height: 4vw;
+    font-size: 2vw;
 }
-
 #start-btn:hover{
     background-color: rgb(129, 1, 1);;
-    scale: 1.2;
+    scale: 1.1;
     color: white;
 
 }
