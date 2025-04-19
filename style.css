@@ -13,6 +13,7 @@ h1{
     margin-bottom: 20px;
 }
 
+
 label{
     font-weight: bold;
     margin-right: 10px;
@@ -23,16 +24,16 @@ select{
     border-radius: 5px;
     border: 1px solid ;
     font-size: 16px;
+    background-color: rgba(248, 242, 242, 0.658);;
 }
 
 #word-display{
-    background-color: rgba(255, 255, 255, 0);
-    border: 2px solid #ddd;
+    background-color: rgba(83, 76, 76, 0.39);
+ 
     padding: 20px;
     border-radius: 8px;
-    min-height: 80px;
-    font-size: 20px;
-    margin-top: 30px;
+    font-size: 25px;
+    margin-top: 20px;
     margin-bottom: 20px;
     word-wrap: break-word;
 }
@@ -140,3 +141,27 @@ select{
     50% { transform: translateY(-10px);}
 }
 
+#timer{
+    font-size: 22px;
+    color: white;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#restart-btn{
+    display: none;
+    margin-top: 10px;
+    padding: 12px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    transition: backgroun-color 0.3s ease;
+    background: linear-gradient(45deg, #790202 0%, #8B0000 50%, #FF0000 100%);
+    border: white 0.1px solid;
+    width: 10.5vw;
+    height: 4vw;
+    font-size: 2vw;
+
+}
