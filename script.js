@@ -152,6 +152,7 @@ document.getElementById("start-btn").addEventListener("click", () => {
     setTimeout(() => splash.style.display = 'none', 1000);
 
     const audio = new Audio('642309__lightmister__light-mister-intro.mp3');
+    audio.loop=true;
     audio.play();
 });
 
