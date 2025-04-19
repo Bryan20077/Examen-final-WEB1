@@ -159,15 +159,23 @@ document.getElementById("start-btn").addEventListener("click", () => {
 function startCountdown() {
     if (timerStarted) return; 
     timerStarted = true;
+
     timerInterval = setInterval(() => {
         timeLeft--;
         timerDisplay.textContent = timeLeft;
+
+        const timerContainer = document.getElementById("timer");
+
+        if (timeLeft <= 10) {
+            timerContainer.classList.add("pulse-timer");
+        }
 
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
             inputField.disabled = true;
             results.textContent += " | Temps écoulé !";
             restartBtn.style.display = "inline-block";
+            timerContainer.classList.remove("pulse-timer");
         }
     }, 1000);
 }
