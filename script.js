@@ -131,7 +131,7 @@ const highlightNextWord = () => {
 
     if (currentWordIndex < wordElements.length) {
         if (currentWordIndex > 0) {
-            wordElements[currentWordIndex - 1].style.color = "black";
+            wordElements[currentWordIndex - 1].style.color = "green";
         }
         wordElements[currentWordIndex].style.color = "red";
     }
