@@ -6,13 +6,21 @@
  * Sur ce... Amusez-vous bien ! 
  */
 let startTime = null, previousEndTime = null;
+let timeLeft = 60;
+let timerInterval;
+let timerStarted = false;
 let currentWordIndex = 0;
+let totalCorrectLetters = 0;
+let totalExpectedLetters = 0;
 const wordsToType = [];
 
 const modeSelect = document.getElementById("mode");
 const wordDisplay = document.getElementById("word-display");
 const inputField = document.getElementById("input-field");
 const results = document.getElementById("results");
+const timerDisplay = document.getElementById("time");
+const restartBtn = document.getElementById("restart-btn");
+
 
 const words = {
     easy: ["apple", "banana", "grape", "orange", "cherry"],
@@ -33,6 +41,10 @@ const startTest = (wordCount = 50) => {
     currentWordIndex = 0;
     startTime = null;
     previousEndTime = null;
+    timeLeft = 60;
+    timerDisplay.textContent = timeLeft;
+    timerStarted = false;
+    clearInterval(timerInterval);
 
     for (let i = 0; i < wordCount; i++) {
         wordsToType.push(getRandomWord(modeSelect.value));
@@ -46,39 +58,64 @@ const startTest = (wordCount = 50) => {
     });
 
     inputField.value = "";
+    inputField.disabled = false;
     results.textContent = "";
 };
 
 // Start the timer when user begins typing
-const startTimer = () => {
-    if (!startTime) startTime = Date.now();
-};
+inputField.addEventListener("input", () => {
+    if (startTime === null) {
+        startTime = Date.now();
+        previousEndTime = startTime;
+    }
+    if (!timerStarted) {
+        startCountdown();   
+    }
+});
 
 // Calculate and return WPM & accuracy
 const getCurrentStats = () => {
-    const elapsedTime = (Date.now() - previousEndTime) / 1000; // Seconds
-    const wpm = (wordsToType[currentWordIndex].length / 5) / (elapsedTime / 60); // 5 chars = 1 word
-    const accuracy = (wordsToType[currentWordIndex].length / inputField.value.length) * 100;
+    const elapsedTime = (Date.now() - startTime) / 1000; 
+    const totalChars = wordsToType
+        .slice(0, currentWordIndex + 1)
+        .reduce((acc, word) => acc + word.length, 0);
 
-    return { wpm: wpm.toFixed(2), accuracy: accuracy.toFixed(2) };
+    const wpm = (totalChars / 5) / (elapsedTime / 60); 
+    const typedWord = inputField.value.trim();
+    const expectedWord = wordsToType[currentWordIndex];
+    let correctLetters = 0;
+
+    for (let i = 0; i < Math.min(typedWord.length, expectedWord.length); i++) {
+        if (typedWord[i] === expectedWord[i]) {
+            correctLetters++;
+        }
+    }
+
+    const accuracy = expectedWord.length > 0 ? (correctLetters / expectedWord.length) * 100 : 0;
+
+    return {
+        wpm: wpm.toFixed(2),
+        accuracy: accuracy.toFixed(2)
+    };
 };
 
 // Move to the next word and update stats only on spacebar press
 const updateWord = (event) => {
-    if (event.key === " ") { // Check if spacebar is pressed
-        if (inputField.value.trim() === wordsToType[currentWordIndex]) {
-            if (!previousEndTime) previousEndTime = startTime;
+    if (event.key === " ") {
+        event.preventDefault(); // empêche espace supplémentaire
+        const typedWord = inputField.value.trim();
+        const currentWord = wordsToType[currentWordIndex];
+        const { wpm, accuracy } = getCurrentStats();
 
-            const { wpm, accuracy } = getCurrentStats();
-            results.textContent = `WPM: ${wpm}, Accuracy: ${accuracy}%`;
-
+        if (typedWord === currentWord) {
+            results.textContent = ` WPM: ${wpm}, Accuracy: ${accuracy}%`;
             currentWordIndex++;
-            previousEndTime = Date.now();
             highlightNextWord();
-
-            inputField.value = ""; // Clear input field after space
-            event.preventDefault(); // Prevent adding extra spaces
+        } else {
+            results.textContent = ` Mot incorrect | WPM: ${wpm}, Accuracy: ${accuracy}%`;
         }
+
+        inputField.value = ""; // clear champ
     }
 };
 
@@ -95,9 +132,7 @@ const highlightNextWord = () => {
 };
 
 // Event listeners
-// Attach `updateWord` to `keydown` instead of `input`
 inputField.addEventListener("keydown", (event) => {
-    startTimer();
     updateWord(event);
 });
 modeSelect.addEventListener("change", () => startTest());
@@ -105,11 +140,36 @@ modeSelect.addEventListener("change", () => startTest());
 // Start the test
 startTest();
 
-document.getElementById("start-btn").addEventListener("click" , () =>{
-    const splash =document.getElementById('splash-screen');
-    splash.style.opacity =0;
-    setTimeout(() => splash.style.display = 'none' , 1000);
+document.getElementById("start-btn").addEventListener("click", () => {
+    const splash = document.getElementById('splash-screen');
+    splash.style.opacity = 0;
+    setTimeout(() => splash.style.display = 'none', 1000);
 
-    const audio =new Audio ('642309__lightmister__light-mister-intro.mp3');
+    const audio = new Audio('642309__lightmister__light-mister-intro.mp3');
     audio.play();
 });
+
+// Timer de 60 secondes
+function startCountdown() {
+    if (timerStarted) return; 
+    timerStarted = true;
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            inputField.disabled = true;
+            results.textContent += " | Temps écoulé !";
+            restartBtn.style.display = "inline-block";
+        }
+    }, 1000);
+}
+
+//button to restart
+restartBtn.addEventListener("click", () => {
+    restartBtn.style.display = "none"; 
+    startTest(); 
+});
+
+
