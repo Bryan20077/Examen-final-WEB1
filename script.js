@@ -36,15 +36,14 @@ const getRandomWord = (mode) => {
 
 // Initialize the typing test
 const startTest = (wordCount = 50) => {
-    wordsToType.length = 0; // Clear previous words
-    wordDisplay.innerHTML = ""; // Clear display
+    wordsToType.length = 0;
+    wordDisplay.innerHTML = "";
     currentWordIndex = 0;
     startTime = null;
     previousEndTime = null;
-    timeLeft = 60;
-    timerDisplay.textContent = timeLeft;
-    timerStarted = false;
-    clearInterval(timerInterval);
+
+    totalCorrectLetters = 0;   
+    totalExpectedLetters = 0;
 
     for (let i = 0; i < wordCount; i++) {
         wordsToType.push(getRandomWord(modeSelect.value));
@@ -53,13 +52,16 @@ const startTest = (wordCount = 50) => {
     wordsToType.forEach((word, index) => {
         const span = document.createElement("span");
         span.textContent = word + " ";
-        if (index === 0) span.style.color = "red"; // Highlight first word
+        if (index === 0) span.style.color = "red";
         wordDisplay.appendChild(span);
     });
 
     inputField.value = "";
     inputField.disabled = false;
     results.textContent = "";
+    timerDisplay.textContent = timeLeft = 60;
+    timerStarted = false;
+    clearInterval(timerInterval);
 };
 
 // Start the timer when user begins typing
@@ -75,23 +77,15 @@ inputField.addEventListener("input", () => {
 
 // Calculate and return WPM & accuracy
 const getCurrentStats = () => {
-    const elapsedTime = (Date.now() - startTime) / 1000; 
+    const elapsedTime = (Date.now() - startTime) / 1000;
     const totalChars = wordsToType
         .slice(0, currentWordIndex + 1)
         .reduce((acc, word) => acc + word.length, 0);
 
-    const wpm = (totalChars / 5) / (elapsedTime / 60); 
-    const typedWord = inputField.value.trim();
-    const expectedWord = wordsToType[currentWordIndex];
-    let correctLetters = 0;
-
-    for (let i = 0; i < Math.min(typedWord.length, expectedWord.length); i++) {
-        if (typedWord[i] === expectedWord[i]) {
-            correctLetters++;
-        }
-    }
-
-    const accuracy = expectedWord.length > 0 ? (correctLetters / expectedWord.length) * 100 : 0;
+    const wpm = (totalChars / 5) / (elapsedTime / 60);
+    const accuracy = totalExpectedLetters === 0//la moyenne de tout les mots
+        ? 100
+        : (totalCorrectLetters / totalExpectedLetters) * 100;
 
     return {
         wpm: wpm.toFixed(2),
@@ -99,23 +93,35 @@ const getCurrentStats = () => {
     };
 };
 
+
 // Move to the next word and update stats only on spacebar press
 const updateWord = (event) => {
     if (event.key === " ") {
-        event.preventDefault(); // empêche espace supplémentaire
+        event.preventDefault();
         const typedWord = inputField.value.trim();
         const currentWord = wordsToType[currentWordIndex];
-        const { wpm, accuracy } = getCurrentStats();
+
+        // Comparaison lettre par lettre
+        for (let i = 0; i < Math.min(typedWord.length, currentWord.length); i++) {
+            if (typedWord[i] === currentWord[i]) {
+                totalCorrectLetters++;
+            }
+        }
+
+        totalExpectedLetters += currentWord.length;
 
         if (typedWord === currentWord) {
+            const { wpm, accuracy } = getCurrentStats();
             results.textContent = ` WPM: ${wpm}, Accuracy: ${accuracy}%`;
+
             currentWordIndex++;
             highlightNextWord();
         } else {
+            const { wpm, accuracy } = getCurrentStats();
             results.textContent = ` Mot incorrect | WPM: ${wpm}, Accuracy: ${accuracy}%`;
         }
 
-        inputField.value = ""; // clear champ
+        inputField.value = "";
     }
 };
 
