@@ -21,15 +21,26 @@ body {
 label {
     font-weight: bold;
     margin-right: 10px;
+    color: rgb(202, 225, 245);
+    font-size: 1.7vw;
 }
 
 select {
     padding: 8px 12px;
     border-radius: 5px;
     border: 1px solid;
+    font-size: 17px;
+    background-color: rgb(15, 10, 10);
+    height: 2.5vw;
+    color: rgb(184, 218, 248);
+    background-color: black;
+    font-size: 1.3vw;
+    font-family: Arial, Helvetica, sans-serif;
+    box-shadow: rgb(248, 11, 11) 3.2px 5px;
     font-size: 16px;
     background-color: rgba(248, 242, 242, 0.658);
 }
+
 
 #word-display {
     background-color: rgba(83, 76, 76, 0.39);
@@ -113,6 +124,15 @@ select {
     height: 4vw;
     font-size: 2vw;
 }
+
+
+
+
+label{
+    color: white;
+    font-size: 1.7vw;
+}
+
 
 
 /* Animations */
