@@ -8,7 +8,6 @@ body {
     background-size: cover;
 }
 
-
     h1 {
         font-family: 'Orbitron', sans-serif;
         font-size: 3.5vw;
@@ -18,14 +17,6 @@ body {
         margin-bottom: 20px;
         transition: transform 0.3s ease;
   }
-
-h1{
-    color: rgb(196, 4, 4);
-    margin-bottom: 20px;
-    font-size: 3.5vw;
-}
-
-
 
 label {
     font-weight: bold;
@@ -37,13 +28,6 @@ select {
     border-radius: 5px;
     border: 1px solid;
     font-size: 16px;
-
-    background-color: rgba(248, 242, 242, 0.658);
-
-    height: 2.5vw;
-    color: white;
-    background-color: black;
-    font-size: 1.3vw;
     background-color: rgba(248, 242, 242, 0.658);
 }
 
@@ -55,7 +39,6 @@ select {
     margin-top: 20px;
     margin-bottom: 20px;
     word-wrap: break-word;
-    color: aliceblue;
 }
 
 #input-field {
@@ -129,14 +112,6 @@ select {
     width: 10.5vw;
     height: 4vw;
     font-size: 2vw;
-}
-
-
-
-}
-label{
-    color: white;
-    font-size: 1.7vw;
 }
 
 
