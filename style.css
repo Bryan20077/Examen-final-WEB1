@@ -11,6 +11,7 @@ body{
 h1{
     color: rgb(196, 4, 4);
     margin-bottom: 20px;
+    font-size: 3.5vw;
 }
 
 label{
@@ -23,6 +24,10 @@ select{
     border-radius: 5px;
     border: 1px solid ;
     font-size: 16px;
+    height: 2.5vw;
+    color: white;
+    background-color: black;
+    font-size: 1.3vw;
 }
 
 #word-display{
@@ -35,6 +40,7 @@ select{
     margin-top: 30px;
     margin-bottom: 20px;
     word-wrap: break-word;
+    color: aliceblue;
 }
 
 #input-field{
@@ -128,6 +134,10 @@ select{
     scale: 1.1;
     color: white;
 
+}
+label{
+    color: white;
+    font-size: 1.7vw;
 }
 
 @keyframes fadeIn{
